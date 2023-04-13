@@ -10,3 +10,6 @@ export const debounce = (fn: Function, delay: number = 200) => {
     }, delay);
   };
 };
+export const handleData = (data) => {
+  
+}

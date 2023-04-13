@@ -4,16 +4,9 @@ import { WxPerformance } from "@mitojs/wx-mini-performance";
 import { debounce } from "./utils";
 import type { IEvent, IOptions } from "./interface";
 import { TrackActionType } from "./types";
+const plugin: any = vuePlugin;
 
-export const wxMiniSdk = (app: any, options: IOptions) => {
-  const plugin: any = vuePlugin;
-  // 暂存当前页面信息
-  const currentPage = {
-    startTime: 0,
-    page: {
-      route: undefined,
-    },
-  };
+export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
   // 初始化mito
   const MitoInstance = init(
     {
@@ -21,16 +14,18 @@ export const wxMiniSdk = (app: any, options: IOptions) => {
       pageOnHide,
       vue: app,
       silentConsole: true,
-      dsn: "https://aiapi.nestsound.cn/querymodeltype",
+      dsn: process.env.npm_package_config_dsnUrl,
       debug: false,
       // maxBreadcrumbs: 10,
       throttleDelayTime: 1000,
       async beforeDataReport(event) {
-        // 获取上报内容
         const authInfo: any = event.authInfo || {};
         authInfo.versionName = options?.versionName;
         authInfo.versionCode = options?.versionName;
-        return event;
+        return {
+          ...event,
+          ...extData,
+        };
       },
       ...options,
     },
@@ -40,7 +35,7 @@ export const wxMiniSdk = (app: any, options: IOptions) => {
   new WxPerformance({
     appId: options?.apikey,
     immediately: true,
-    ignoreUrl: /report/,
+    ignoreUrl: new RegExp(JSON.stringify(process.env.npm_package_config_dsnUrl)),
     report: debounce((data: any) => {
       const item = data[0];
       if (
@@ -56,6 +51,13 @@ export const wxMiniSdk = (app: any, options: IOptions) => {
       }
     }, 500),
   });
+  // 暂存当前页面信息
+  const currentPage = {
+    startTime: 0,
+    page: {
+      route: undefined,
+    },
+  };
   // 页面显示钩子
   function pageOnShow(page: any) {
     currentPage.startTime = Date.now();
@@ -76,7 +78,7 @@ export const wxMiniSdk = (app: any, options: IOptions) => {
     });
   }
   // vue全局错误上报
-  app.config.errorHandler = (err: any, vm: any, info: string) => {
+  app.config.errorHandler = (err: any, vm: any | null, info: string) => {
     MitoInstance.trackSend({
       actionType: TrackActionType.ERROR,
       isTrack: false,
@@ -85,10 +87,11 @@ export const wxMiniSdk = (app: any, options: IOptions) => {
       info,
       page: currentPage.page?.route,
     });
+    console.error(err);
   };
   const vueVersion = app.version?.substring(0, 2);
   // 手动事件上报
-  const $trackEvent = ({ trackId, data }: IEvent) => {
+  const $trackEvent = (trackId: string, data: any) => {
     MitoInstance.trackSend({
       // 可自定义
       actionType: TrackActionType.EVENT,
