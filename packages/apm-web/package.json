@@ -36,7 +36,6 @@
     "@typescript-eslint/parser": "^5.57.1",
     "eslint": "^8.37.0",
     "rollup": "^3.20.2",
-    "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-buble": "^0.19.8",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-filesize": "^10.0.0",
@@ -48,6 +47,7 @@
     "rollup-plugin-typescript2": "^0.34.1",
     "rollup-plugin-vue": "5.1.9",
     "typescript": "^5.0.3",
-    "vue-template-compiler": "^2.7.14"
+    "vue-template-compiler": "^2.7.14",
+    "@rollup/plugin-babel": "^6.0.3"
   }
 }
