@@ -8,22 +8,21 @@ import vue from 'rollup-plugin-vue'
 import filesize from 'rollup-plugin-filesize'
 import babel from '@rollup/plugin-babel'
 import replace from 'rollup-plugin-replace'
-import pkg from './package.json' assert {type: 'json'};
-
+const {npm_package_commonjs, npm_package_main, npm_package_umd} = process.env
 export default {
   input: 'src/index.ts',
   output: [
     { 
-        file: pkg.commonjs, 
+        file: npm_package_commonjs, 
         format: 'cjs',
     }, 
     { 
-        file: pkg.main, 
+        file: npm_package_main, 
         format: 'es', 
     },
     { 
         name: "apm-sdk", 
-        file: pkg.umd, 
+        file: npm_package_umd, 
         format: 'umd' 
     } 
     ],
