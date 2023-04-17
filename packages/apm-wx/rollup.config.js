@@ -12,19 +12,19 @@ const {npm_package_commonjs, npm_package_main, npm_package_umd} = process.env
 export default {
   input: 'src/index.ts',
   output: [
-    { 
-        file: npm_package_commonjs, 
-        format: 'cjs',
-    }, 
+    // { 
+    //     file: npm_package_commonjs, 
+    //     format: 'cjs',
+    // }, 
     { 
         file: npm_package_main, 
         format: 'es', 
     },
-    { 
-        name: "apm-sdk", 
-        file: npm_package_umd, 
-        format: 'umd' 
-    } 
+    // { 
+    //     name: "apm-sdk", 
+    //     file: npm_package_umd, 
+    //     format: 'umd' 
+    // } 
     ],
   external: ['vue'],
   plugins: [

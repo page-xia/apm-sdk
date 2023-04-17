@@ -5,10 +5,14 @@
   "main": "dist/index.js",
   "umd": "dist/index.umd.js",
   "commonjs": "dist/index.cjs.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/index.d.ts",
   "keywords": [
     "apm",
     "sdk"
+  ],
+  "files": [
+    "README.md",
+    "dist/"
   ],
   "publishConfig": {
     "registry": "http://nexus.axhome.com.cn/repository/local-npm/"
