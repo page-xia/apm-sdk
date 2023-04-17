@@ -10,7 +10,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
-    "publish": "lerna publish"
+    "publish:pkg": "lerna publish from-package"
   },
   "config": {
     "dsnUrl": "https://aiapi.nestsound.cn/querymodeltype"

@@ -12,7 +12,6 @@ const typeMap: Record<string, string> = {
 }
 const defaultDsn = process?.env?.npm_package_config_dsnUrl || 'https://apm-api.axhome.com.cn/'
 export const webSdk = (app: any, options: IOptions, extData?: any) => {
-  // 初始化mito
   const MitoInstance = init(
     {
       vue: app,
