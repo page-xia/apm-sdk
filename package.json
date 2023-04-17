@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "private": true,
+  "private": false,
   "workspaces": [
     "packages/*"
   ],
@@ -9,9 +9,11 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "publish": "lerna publish"
   },
   "config": {
     "dsnUrl": "https://aiapi.nestsound.cn/querymodeltype"
-  }
+  },
+  "version": "0.0.0"
 }

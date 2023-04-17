@@ -1,23 +1,30 @@
 import { vuePlugin } from "@mitojs/vue";
 import { init } from "@mitojs/browser";
-import { debounce } from "./utils";
+import {Perfume} from 'perfume.js';
+import { debounce, getDeviceId } from "./utils";
 import type { IEvent, IOptions } from "./interface";
 import { TrackActionType } from "./types";
 
 const plugin: any = vuePlugin;
-
+const typeMap: Record<string, string> = {
+  'reload': 'render',
+  'navigate': 'navigation'
+}
+const defaultDsn = process?.env?.npm_package_config_dsnUrl || 'https://apm-api.axhome.com.cn/'
 export const webSdk = (app: any, options: IOptions, extData?: any) => {
   // 初始化mito
   const MitoInstance = init(
     {
       vue: app,
       silentConsole: true,
-      dsn: process.env.npm_package_config_dsnUrl,
+      silentDom: true,
+      dsn: defaultDsn,
       debug: true,
       // maxBreadcrumbs: 10,
       throttleDelayTime: 1000,
       async beforeDataReport(event) {
         return {
+          deviceId: getDeviceId(),
           ...event,
           ...extData,
         };
@@ -26,10 +33,41 @@ export const webSdk = (app: any, options: IOptions, extData?: any) => {
     },
     [plugin]
   );
+  let eventList: any = {
+    actionType: "WX_PERFORMANCE",
+    appId: options?.apikey,
+    item: [],
+    isTrack: true,
+  }
+  new Perfume({
+    analyticsTracker: (item) => {
+      const {data, metricName, navigationType, rating, ...o} = item
+      const itemData: any = {
+        name: metricName,
+        navigationType: typeMap[navigationType || 'reload'] || navigationType,
+      }
+      rating && (itemData.rating = rating)
+      if (typeof data === 'number') {
+        itemData.duration = data
+      } else if (data instanceof Object && !['storageEstimate'].includes(metricName)) {
+        eventList = {
+          ...eventList,
+          ...data
+        }
+      }
+      eventList.item.push(itemData)
+      sendPerfume()
+    }
+  })
+  const sendPerfume = debounce(async () => {
+    await MitoInstance.transport.send(eventList)
+    eventList.item = []
+  }, 1000)
   // 手动事件上报
   const $trackEvent = ({ trackId, data }: IEvent) => {
-    MitoInstance.transport.send({
+    return MitoInstance.transport.send({
       isTrack: true,
+      actionType: TrackActionType.EVENT,
       trackId,
       ...data
     })

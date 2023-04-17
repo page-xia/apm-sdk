@@ -13,8 +13,11 @@
   "files": [
     "src"
   ],
+  "config": {
+    "dsnUrl": "https://apm-api.axhome.com.cn/"
+  },
   "publishConfig": {
-    "registry": "https://registry.npmmirror.com/"
+    "registry": "http://nexus.axhome.com.cn/repository/local-npm/"
   },
   "repository": {
     "type": "git",
@@ -27,11 +30,13 @@
   },
   "dependencies": {
     "@mitojs/browser": "^3.0.1",
-    "@mitojs/vue": "^3.0.1"
+    "@mitojs/vue": "^3.0.1",
+    "perfume.js": "^9.0.0-rc.3"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/plugin-transform-runtime": "^7.21.4",
+    "@rollup/plugin-babel": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "eslint": "^8.37.0",
@@ -47,7 +52,6 @@
     "rollup-plugin-typescript2": "^0.34.1",
     "rollup-plugin-vue": "5.1.9",
     "typescript": "^5.0.3",
-    "vue-template-compiler": "^2.7.14",
-    "@rollup/plugin-babel": "^6.0.3"
+    "vue-template-compiler": "^2.7.14"
   }
 }

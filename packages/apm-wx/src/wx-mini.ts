@@ -1,11 +1,11 @@
 import { init } from "@mitojs/wx-mini";
 import { vuePlugin } from "@mitojs/vue";
 import { WxPerformance } from "@mitojs/wx-mini-performance";
-import { debounce } from "./utils";
+import { debounce, getDeviceId } from "./utils";
 import type { IEvent, IOptions } from "./interface";
 import { TrackActionType } from "./types";
 const plugin: any = vuePlugin;
-
+const defaultDsn = process?.env?.npm_package_config_dsnUrl || 'https://apm-api.axhome.com.cn/'
 export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
   // 初始化mito
   const MitoInstance = init(
@@ -14,7 +14,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
       pageOnHide,
       vue: app,
       silentConsole: true,
-      dsn: process.env.npm_package_config_dsnUrl,
+      dsn: defaultDsn,
       debug: false,
       // maxBreadcrumbs: 10,
       throttleDelayTime: 1000,
@@ -23,6 +23,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
         authInfo.versionName = options?.versionName;
         authInfo.versionCode = options?.versionName;
         return {
+          deviceId: getDeviceId(),
           ...event,
           ...extData,
         };
@@ -31,26 +32,33 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
     },
     [plugin]
   );
+  let eventList = {
+    item: []
+  }
   // 初始化性能监控
   new WxPerformance({
     appId: options?.apikey,
     immediately: true,
-    ignoreUrl: new RegExp(JSON.stringify(process.env.npm_package_config_dsnUrl)),
+    ignoreUrl: new RegExp(defaultDsn),
     report: debounce((data: any) => {
       const item = data[0];
       if (
-        item &&
         ["WX_PERFORMANCE", "MEMORY_WARNING", "WX_USER_ACTION"].includes(
           item?.type
         )
       ) {
-        MitoInstance.trackSend({
+        eventList = {
           actionType: item.type,
           ...data[0],
-        });
+        }
+        sendPerfume()
       }
-    }, 500),
+    }, 1000),
   });
+  const sendPerfume = debounce(async () => {
+    await MitoInstance.transport.send(eventList)
+    eventList.item = []
+  }, 1000)
   // 暂存当前页面信息
   const currentPage = {
     startTime: 0,
