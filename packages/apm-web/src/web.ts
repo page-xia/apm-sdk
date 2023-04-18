@@ -10,7 +10,7 @@ const typeMap: Record<string, string> = {
   'reload': 'render',
   'navigate': 'navigation'
 }
-const defaultDsn = process?.env?.npm_package_config_dsnUrl || 'https://apm-api.axhome.com.cn/'
+const defaultDsn = 'https://apm-api.axhome.com.cn/'
 export const webSdk = (app: any, options: IOptions, extData?: any) => {
   // 测试1
   const MitoInstance = init(

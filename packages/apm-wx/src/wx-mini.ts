@@ -5,7 +5,7 @@ import { debounce, getDeviceId } from "./utils";
 import type { IEvent, IOptions } from "./interface";
 import { TrackActionType } from "./types";
 const plugin: any = vuePlugin;
-const defaultDsn = process?.env?.npm_package_config_dsnUrl || 'https://apm-api.axhome.com.cn/'
+const defaultDsn = 'https://apm-api.axhome.com.cn/'
 export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
   // 初始化mito
   const MitoInstance = init(
