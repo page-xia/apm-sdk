@@ -5,7 +5,7 @@ import UAParser from 'ua-parser-js'
 import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath } from "../../utils";
 import {DSNURL} from '../../config'
 import type { IEvent, IOptions } from "./interface";
-import { TrackActionType } from "./types";
+import { TrackActionType } from "../../types";
 
 const plugin: any = vuePlugin;
 const typeMap: Record<string, string> = {
@@ -22,6 +22,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
       debug: true,
       throttleDelayTime: 1000,
       async beforeDataReport(event: any) {
+        console.log(event.data, 'event')
         deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
         const { data, ...o } = event;
         const ed = {
@@ -52,8 +53,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
   // 初始化性能上报
   new Perfume({
     analyticsTracker: (item) => {
-      const {data, metricName, navigationType, rating, ...o} = item
-      console.log(item, 'item')
+      const {data, metricName, navigationType, rating} = item
       const itemData: any = {
         // name: metricName,
         navigationType: typeMap[navigationType || 'reload'] || navigationType,

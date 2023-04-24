@@ -1,3 +1,5 @@
+import { IVitalsScore } from "../types";
+
 declare var wx: any;
 type AnyObject = {
   [key: string]: any;
@@ -134,3 +136,19 @@ export function deletePropsByPath(obj: ObjectOrArray, paths: string[]): ObjectOr
   return obj;
 }
 
+const perThresholds = {
+  FCP: [1000, 3000],
+  LCP: [2500, 4000],
+  FR: [100, 300],
+}
+export const getRating = (
+  value: number,
+  name: 'FCP' | 'LCP' | 'FR',
+): IVitalsScore => {
+  const vitalsThresholds = perThresholds[name];
+  if (!vitalsThresholds || !value) return undefined
+  if (value <= vitalsThresholds[0]) {
+    return 'good';
+  }
+  return value <= vitalsThresholds[1] ? 'needsImprovement' : 'poor';
+};

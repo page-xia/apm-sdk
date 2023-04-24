@@ -14,3 +14,11 @@ export enum TrackActionType {
   // 其他埋点类型
   OTHER = 'OTHER',
 }
+export const EventKeyMap: any = {
+  firstContentfulPaint: 'FCP',
+  firstPaint: 'FP',
+  firstRender: 'FR',
+  largestContentfulPaint: 'LCP',
+}
+
+export type IVitalsScore = 'good' | 'needsImprovement' | 'poor' | undefined;

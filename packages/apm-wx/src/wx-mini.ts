@@ -1,10 +1,10 @@
 import { init } from "@mitojs/wx-mini";
 import { vuePlugin } from "@mitojs/vue";
 import { WxPerformance } from "@mitojs/wx-mini-performance";
-import { debounce, deletePropsByPath, getDeviceId, getSessionId } from "../../utils";
+import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRating, getSessionId } from "../../utils";
 import {DSNURL} from '../../config'
 import type { IEvent, IOptions } from "./interface";
-import { TrackActionType } from "./types";
+import { EventKeyMap, TrackActionType } from "../../types";
 const plugin: any = vuePlugin;
 export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
   // 初始化mito
@@ -17,16 +17,18 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       silentDom: true,
       dsn: DSNURL,
       debug: false,
-      // maxBreadcrumbs: 10,
+      // maxBreadcrumbs: 2,
       throttleDelayTime: 1000,
       async beforeDataReport(event) {
         deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
-        const { data, ...o } = event;
+        const { data, breadcrumb, ...o } = event;
+        const breadcrumbObj = arrayToObject([...(breadcrumb || [])])
         return {
           deviceId: getDeviceId(),
           sid: getSessionId(),
           versionName: options?.versionName,
           versionCode: options?.versionName,
+          breadcrumb: breadcrumbObj,
           ...o,
           ...extData,
           ...data,
@@ -36,23 +38,34 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
     },
     [plugin]
   );
-  let eventList = {
-  }
+  let eventList: any = {};
   // 初始化性能监控
   new WxPerformance({
     appId: options?.apikey,
     immediately: true,
     ignoreUrl: new RegExp(DSNURL),
     report: debounce((data: any) => {
-      const item = data[0];
+      const {type, item, ...eventParams} = data[0];
+      console.log(item, type, eventParams, 'item')
+
       if (
         ["WX_PERFORMANCE", "MEMORY_WARNING", "WX_USER_ACTION"].includes(
-          item?.type
+          type
         )
       ) {
-        eventList[item.type] = {
-          ...data[0]
+        eventList = {
+          ...eventParams
         }
+        item?.map((v: any) => {
+          let itemName = EventKeyMap[v.name] || v.name;
+          const {duration, entryType, startTime} = v;
+          eventList[itemName] = {
+            duration,
+            startTime,
+            navigationType: entryType,
+            rating: getRating(duration, itemName),
+          }
+        })
         sendPerfume()
       }
     }, 1000),
