@@ -1,4 +1,4 @@
-import { IVitalsScore } from "../types";
+import { IVitalsScore } from "./types";
 
 declare var wx: any;
 type AnyObject = {

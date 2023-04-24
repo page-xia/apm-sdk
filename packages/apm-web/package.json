@@ -21,10 +21,6 @@
   "publishConfig": {
     "registry": "http://nexus.axhome.com.cn/repository/local-npm/"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@gitlab.axhome.com.cn:front-projects/apm-sdk.git"
-  },
   "scripts": {
     "clean:dist": "rm -rf dist/",
     "build:types": "npm run clean:dist && tsc -b ./tsconfig.types.json",

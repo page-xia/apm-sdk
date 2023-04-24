@@ -16,7 +16,7 @@ export default {
     //     file: npm_package_commonjs, 
     //     format: 'cjs',
     // }, 
-    { 
+    {
         file: npm_package_main, 
         format: 'es', 
     },

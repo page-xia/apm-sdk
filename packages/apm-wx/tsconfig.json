@@ -5,6 +5,7 @@
     "declaration": true,
     "removeComments": true,
     "outDir": "./dist/",
+    "declarationDir": "./dist",
     "strict": true,
     "sourceMap": false,
     "noImplicitAny": false,

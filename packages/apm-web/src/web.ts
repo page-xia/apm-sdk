@@ -1,10 +1,10 @@
 import { vuePlugin } from "@mitojs/vue";
 import { init } from "@mitojs/browser";
 import {Perfume} from 'perfume.js';
-import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath } from "../../utils";
-import {DSNURL} from '../../config'
+import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath } from "./utils";
+import {DSNURL} from './config'
 import type { IEvent, IOptions } from "./interface";
-import { TrackActionType } from "../../types";
+import { TrackActionType } from "./types";
 
 const plugin: any = vuePlugin;
 const typeMap: Record<string, string> = {

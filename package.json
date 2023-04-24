@@ -13,6 +13,10 @@
     "build": "lerna run build",
     "publish:pkg": "npm run build && lerna version patch --amend && lerna publish from-package"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.axhome.com.cn:front-projects/apm-sdk.git"
+  },
   "config": {
     "dsnUrl": "https://aiapi.nestsound.cn/querymodeltype"
   },

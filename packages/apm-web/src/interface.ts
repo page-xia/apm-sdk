@@ -1,4 +1,4 @@
-import type { TrackActionType } from "../../types"
+import type { TrackActionType } from "./types"
 
 export interface IEvent {
   // uuid

@@ -1,10 +1,10 @@
 import { init } from "@mitojs/wx-mini";
 import { vuePlugin } from "@mitojs/vue";
 import { WxPerformance } from "@mitojs/wx-mini-performance";
-import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRating, getSessionId } from "../../utils";
-import {DSNURL} from '../../config'
+import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRating, getSessionId } from "./utils";
+import {DSNURL} from './config'
 import type { IEvent, IOptions } from "./interface";
-import { EventKeyMap, TrackActionType } from "../../types";
+import { EventKeyMap, TrackActionType } from "./types";
 const plugin: any = vuePlugin;
 export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
   // 初始化mito
