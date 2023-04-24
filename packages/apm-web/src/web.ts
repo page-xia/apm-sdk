@@ -1,7 +1,6 @@
 import { vuePlugin } from "@mitojs/vue";
 import { init } from "@mitojs/browser";
 import {Perfume} from 'perfume.js';
-import UAParser from 'ua-parser-js'
 import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath } from "../../utils";
 import {DSNURL} from '../../config'
 import type { IEvent, IOptions } from "./interface";
@@ -47,11 +46,11 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
   // 性能上报栈
   let eventList: any = {
     ...defaultEvent,
-    systemInfo: new UAParser().getResult()
+    systemInfo: navigator.userAgent
   }
   let timer: any;
   // 初始化性能上报
-  new Perfume({
+  const per = new Perfume({
     analyticsTracker: (item) => {
       const {data, metricName, navigationType, rating} = item
       const itemData: any = {
