@@ -1,7 +1,9 @@
 import { vuePlugin } from "@mitojs/vue";
 import { init } from "@mitojs/browser";
 import {Perfume} from 'perfume.js';
-import { debounce, getDeviceId } from "./utils";
+import UAParser from 'ua-parser-js'
+import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath } from "../../utils";
+import {DSNURL} from '../../config'
 import type { IEvent, IOptions } from "./interface";
 import { TrackActionType } from "./types";
 
@@ -10,59 +12,74 @@ const typeMap: Record<string, string> = {
   'reload': 'render',
   'navigate': 'navigation'
 }
-const defaultDsn = 'https://apm-api.axhome.com.cn/'
-export const webSdk = (app: any, options: IOptions, extData?: any) => {
-  // 测试1
+export const webSdk = (app: any, options: IOptions, extData?: any): void => {
   const MitoInstance = init(
     {
       vue: app,
       silentConsole: true,
       silentDom: true,
-      dsn: defaultDsn,
+      dsn: DSNURL,
       debug: true,
-      // maxBreadcrumbs: 10,
       throttleDelayTime: 1000,
-      async beforeDataReport(event) {
-        return {
+      async beforeDataReport(event: any) {
+        deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
+        const { data, ...o } = event;
+        const ed = {
           deviceId: getDeviceId(),
-          ...event,
+          sid: getSessionId(),
+          ...o,
           ...extData,
-        };
+          ...data,
+        }
+        return arrayToObject(ed);
       },
       ...options,
     },
     [plugin]
   );
-  let eventList: any = {
+  // console.log(new UAParser().getResult(), 'UAParser')
+  const defaultEvent: any = {
     actionType: "WX_PERFORMANCE",
     appId: options?.apikey,
-    item: [],
     isTrack: true,
   }
+  // 性能上报栈
+  let eventList: any = {
+    ...defaultEvent,
+    systemInfo: new UAParser().getResult()
+  }
+  let timer: any;
+  // 初始化性能上报
   new Perfume({
     analyticsTracker: (item) => {
       const {data, metricName, navigationType, rating, ...o} = item
+      console.log(item, 'item')
       const itemData: any = {
-        name: metricName,
+        // name: metricName,
         navigationType: typeMap[navigationType || 'reload'] || navigationType,
       }
       rating && (itemData.rating = rating)
       if (typeof data === 'number') {
         itemData.duration = data
-      } else if (data instanceof Object && !['storageEstimate'].includes(metricName)) {
+        eventList[metricName] = itemData
+      } else if (data instanceof Object && !['storageEstimate', ''].includes(metricName)) {
         eventList = {
           ...eventList,
           ...data
         }
       }
-      eventList.item.push(itemData)
-      sendPerfume()
+      timer && clearTimeout(timer)
+      timer = setTimeout(() => {
+        sendPerfume()
+      }, 1000);
     }
   })
-  const sendPerfume = debounce(async () => {
+  const sendPerfume = async () => {
     await MitoInstance.transport.send(eventList)
-    eventList.item = []
-  }, 1000)
+    eventList = {
+      ...defaultEvent
+    }
+  }
   // 手动事件上报
   const $trackEvent = ({ trackId, data }: IEvent) => {
     return MitoInstance.transport.send({
@@ -71,10 +88,6 @@ export const webSdk = (app: any, options: IOptions, extData?: any) => {
       trackId,
       ...data
     })
-    // MitoInstance.log({
-    //   trackId,
-    //   data,
-    // });
   };
   const vueVersion = app.version?.substring(0, 2);
   // 多vue版本兼容

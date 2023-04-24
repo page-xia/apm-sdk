@@ -5,6 +5,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@types/ua-parser-js": "^0.7.36",
     "lerna": "^6.6.1"
   },
   "scripts": {

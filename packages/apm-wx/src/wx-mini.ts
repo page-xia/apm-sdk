@@ -1,12 +1,12 @@
 import { init } from "@mitojs/wx-mini";
 import { vuePlugin } from "@mitojs/vue";
 import { WxPerformance } from "@mitojs/wx-mini-performance";
-import { debounce, getDeviceId } from "./utils";
+import { debounce, deletePropsByPath, getDeviceId, getSessionId } from "../../utils";
+import {DSNURL} from '../../config'
 import type { IEvent, IOptions } from "./interface";
 import { TrackActionType } from "./types";
 const plugin: any = vuePlugin;
-const defaultDsn = 'https://apm-api.axhome.com.cn/'
-export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
+export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
   // 初始化mito
   const MitoInstance = init(
     {
@@ -14,18 +14,22 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
       pageOnHide,
       vue: app,
       silentConsole: true,
-      dsn: defaultDsn,
+      silentDom: true,
+      dsn: DSNURL,
       debug: false,
       // maxBreadcrumbs: 10,
       throttleDelayTime: 1000,
       async beforeDataReport(event) {
-        const authInfo: any = event.authInfo || {};
-        authInfo.versionName = options?.versionName;
-        authInfo.versionCode = options?.versionName;
+        deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
+        const { data, ...o } = event;
         return {
           deviceId: getDeviceId(),
-          ...event,
+          sid: getSessionId(),
+          versionName: options?.versionName,
+          versionCode: options?.versionName,
+          ...o,
           ...extData,
+          ...data,
         };
       },
       ...options,
@@ -33,13 +37,12 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
     [plugin]
   );
   let eventList = {
-    item: []
   }
   // 初始化性能监控
   new WxPerformance({
     appId: options?.apikey,
     immediately: true,
-    ignoreUrl: new RegExp(defaultDsn),
+    ignoreUrl: new RegExp(DSNURL),
     report: debounce((data: any) => {
       const item = data[0];
       if (
@@ -47,9 +50,8 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
           item?.type
         )
       ) {
-        eventList = {
-          actionType: item.type,
-          ...data[0],
+        eventList[item.type] = {
+          ...data[0]
         }
         sendPerfume()
       }
@@ -57,7 +59,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any) => {
   });
   const sendPerfume = debounce(async () => {
     await MitoInstance.transport.send(eventList)
-    eventList.item = []
+    eventList = {}
   }, 1000)
   // 暂存当前页面信息
   const currentPage = {

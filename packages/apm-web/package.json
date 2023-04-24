@@ -33,7 +33,8 @@
   "dependencies": {
     "@mitojs/browser": "^3.0.1",
     "@mitojs/vue": "^3.0.1",
-    "perfume.js": "^9.0.0-rc.3"
+    "perfume.js": "^9.0.0-rc.3",
+    "ua-parser-js": "^1.0.35"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
