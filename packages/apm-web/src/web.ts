@@ -47,9 +47,11 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
   let eventList: any = {
     ...defaultEvent,
     systemInfo: navigator.userAgent
+    systemInfo: navigator.userAgent
   }
   let timer: any;
   // 初始化性能上报
+  const per = new Perfume({
   const per = new Perfume({
     analyticsTracker: (item) => {
       const {data, metricName, navigationType, rating} = item
