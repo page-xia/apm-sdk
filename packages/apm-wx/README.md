@@ -9,14 +9,18 @@ registry=https://registry.npmmirror.com
 ```
 
 ### 安装依赖
+
 ```
-npm i @ax/apm-sdk-web
+npm i @ax/apm-sdk-wx
 ```
 ### main.ts中使用
 ```
-import apmWx from '@ax/apm-sdk-web'
+import apmWx from '@ax/apm-sdk-wx'
+import manifest from './manifest.json'
 Vue.use(apmWx, {
   apikey: '项目ID',
+  versionName: manifest.versionName,
+  versionCode: manifest.versionCode,
   extData: {
     // 存放一些额外上报数据
   },
