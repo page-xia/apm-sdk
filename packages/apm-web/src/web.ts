@@ -1,10 +1,10 @@
 import { vuePlugin } from "@mitojs/vue";
 import { init } from "@mitojs/browser";
 import {Perfume} from 'perfume.js';
-import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath } from "@ax/apm-common/utils";
-import {DSNURL} from '@ax/apm-common/config'
-import type { IEvent, IOptions } from "@ax/apm-common/interface";
-import { Severity, TrackActionType } from "@ax/apm-common/types";
+import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath } from "@ax/apm-common";
+import {DSNURL} from '@ax/apm-common'
+import type { IEvent, IOptions } from "@ax/apm-common";
+import { Severity, TrackActionType } from "@ax/apm-common";
 
 const plugin: any = vuePlugin;
 const typeMap: Record<string, string> = {
