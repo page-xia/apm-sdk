@@ -15,9 +15,6 @@
     "experimentalDecorators":true,
     "lib": ["esnext", "dom"],
     "resolveJsonModule": true,
-    "paths": {
-      "@ax/apm-common/*": ["../common/*"]
-    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
