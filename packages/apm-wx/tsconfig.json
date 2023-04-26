@@ -5,7 +5,7 @@
     "declaration": true,
     "removeComments": true,
     "outDir": "./dist/",
-    "declarationDir": "./dist",
+    "declarationDir": "./dist/",
     "strict": true,
     "sourceMap": false,
     "noImplicitAny": false,
@@ -14,7 +14,7 @@
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators":true,
     "lib": ["esnext", "dom"],
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

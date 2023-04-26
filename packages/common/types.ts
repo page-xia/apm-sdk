@@ -20,5 +20,17 @@ export const EventKeyMap: any = {
   firstRender: 'FR',
   largestContentfulPaint: 'LCP',
 }
-
+/** 等级程度枚举 */
+export enum Severity {
+  Else = 'else',
+  Error = 'error',
+  Warning = 'warning',
+  Info = 'info',
+  Debug = 'debug',
+  /** 上报的错误等级 */
+  Low = 'low',
+  Normal = 'normal',
+  High = 'high',
+  Critical = 'critical'
+}
 export type IVitalsScore = 'good' | 'needsImprovement' | 'poor' | undefined;

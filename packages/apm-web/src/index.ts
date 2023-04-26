@@ -1,4 +1,4 @@
-import type { IOptions } from "./interface";
+import type { IOptions } from "common/interface";
 import { webSdk } from "./web";
 const install = function(Vue: any, options: IOptions) {
   webSdk(Vue, options)

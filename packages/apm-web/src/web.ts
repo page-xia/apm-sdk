@@ -1,10 +1,10 @@
 import { vuePlugin } from "@mitojs/vue";
 import { init } from "@mitojs/browser";
 import {Perfume} from 'perfume.js';
-import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath } from "./utils";
-import {DSNURL} from './config'
-import type { IEvent, IOptions } from "./interface";
-import { TrackActionType } from "./types";
+import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath } from "common/utils";
+import {DSNURL} from 'common/config'
+import type { IEvent, IOptions } from "common/interface";
+import { Severity, TrackActionType } from "common/types";
 
 const plugin: any = vuePlugin;
 const typeMap: Record<string, string> = {
@@ -20,8 +20,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
       dsn: DSNURL,
       debug: true,
       throttleDelayTime: 1000,
-      async beforeDataReport(event: any) {
-        console.log(event.data, 'event')
+      beforeDataReport(event: any) {
         deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
         const { data, ...o } = event;
         const ed = {
@@ -42,6 +41,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
     actionType: "WX_PERFORMANCE",
     appId: options?.apikey,
     isTrack: true,
+    level: Severity.Low
   }
   // 性能上报栈
   let eventList: any = {
@@ -84,6 +84,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
     return MitoInstance.transport.send({
       isTrack: true,
       actionType: TrackActionType.EVENT,
+      level: Severity.Normal,
       trackId,
       ...data
     })

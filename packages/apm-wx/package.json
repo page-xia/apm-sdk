@@ -1,11 +1,11 @@
 {
   "name": "@ax/apm-sdk-wx",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "ax apm sdk",
   "main": "dist/index.js",
   "umd": "dist/index.umd.js",
   "commonjs": "dist/index.cjs.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/apm-wx/dist/index.d.ts",
   "keywords": [
     "apm",
     "sdk"
@@ -30,12 +30,13 @@
   "dependencies": {
     "@mitojs/vue": "^3.0.1",
     "@mitojs/wx-mini": "^3.0.1",
-    "@mitojs/wx-mini-performance": "^3.0.1"
+    "@mitojs/wx-mini-performance": "^3.0.1",
+    "common": "^1.0.8"
   },
   "scripts": {
     "clean:dist": "rm -rf dist/",
     "build:types": "npm run clean:dist && tsc -b ./tsconfig.types.json",
-    "build": "rollup -c"
+    "build": "npm run clean:dist && rollup -c"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
