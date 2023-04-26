@@ -30,6 +30,7 @@
     "@ax/apm-common": "^1.0.8",
     "@mitojs/browser": "^3.0.1",
     "@mitojs/vue": "^3.0.1",
+    "common": "^1.0.0",
     "perfume.js": "^9.0.0-rc.3"
   },
   "devDependencies": {
