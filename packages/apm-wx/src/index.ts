@@ -1,4 +1,4 @@
-import type { IOptions } from "@ax/apm-common";
+import type { IOptions } from "@ax/apm-common/src";
 import { wxMiniSdk } from "./wx-mini";
 const install = function(Vue: any, options: IOptions) {
   wxMiniSdk(Vue, options)

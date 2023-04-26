@@ -1,4 +1,4 @@
-import type { IOptions } from "@ax/apm-common";
+import type { IOptions } from "@ax/apm-common/src";
 import { webSdk } from "./web";
 const install = function(Vue: any, options: IOptions) {
   webSdk(Vue, options)
