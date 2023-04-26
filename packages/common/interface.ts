@@ -17,14 +17,12 @@ export interface IEvent {
 export interface IOptions {
   apikey: string // 项目id
   backTrackerId?: any // 获取用户id，需要return用户id
-  versionName: string // 版本名
-  versionCode: string // 版本code
   dsn?: string // 上报接口地址
-  pageOnShow?: () => {} // onShow生命周期
-  pageOnHide?: () => {} // onHide生命周期
   vue?: any // vue实例
   silentConsole?: boolean // 控制台打印
   debug?: boolean // debug模式
   maxBreadcrumbs?: number // 最大行为追踪条数
   throttleDelayTime?: number // 上报频率
+  versionName?: string // mainfest versionName
+  versionCode?: string // mainfest versionCode
 }

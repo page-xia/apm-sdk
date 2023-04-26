@@ -26,10 +26,7 @@ export default {
     }),
     terser(),
     filesize(),
-    typescript({
-      experimentalDecorators: true,
-      module: 'es'
-    }),
+    typescript(),
     // vue({
     //   template: {
     //     isProduction: true

@@ -6,7 +6,7 @@
   "homepage": "",
   "license": "ISC",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/apm-web/src/index.d.ts",
   "type": "module",
   "directories": {
     "src": "src"
@@ -24,11 +24,12 @@
   "scripts": {
     "clean:dist": "rm -rf dist/",
     "build:types": "npm run clean:dist && tsc -b ./tsconfig.types.json",
-    "build": "rollup -c"
+    "build": "npm run clean:dist && rollup -c"
   },
   "dependencies": {
     "@mitojs/browser": "^3.0.1",
     "@mitojs/vue": "^3.0.1",
+    "common": "^1.0.0",
     "perfume.js": "^9.0.0-rc.3"
   },
   "devDependencies": {

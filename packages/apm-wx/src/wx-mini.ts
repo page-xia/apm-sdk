@@ -1,10 +1,10 @@
 import { init } from "@mitojs/wx-mini";
 import { vuePlugin } from "@mitojs/vue";
 import { WxPerformance } from "@mitojs/wx-mini-performance";
-import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRating, getSessionId } from "./utils";
-import {DSNURL} from './config'
-import type { IEvent, IOptions } from "./interface";
-import { EventKeyMap, TrackActionType } from "./types";
+import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRating, getSessionId } from "common/utils";
+import {DSNURL} from 'common/config'
+import type { IEvent, IOptions } from "common/interface";
+import { EventKeyMap, Severity, TrackActionType } from "common/types";
 const plugin: any = vuePlugin;
 export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
   // 初始化mito
@@ -19,7 +19,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       debug: false,
       // maxBreadcrumbs: 2,
       throttleDelayTime: 1000,
-      async beforeDataReport(event) {
+      beforeDataReport(event) {
         deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
         const { data, breadcrumb, ...o } = event;
         const breadcrumbObj = arrayToObject([...(breadcrumb || [])])
@@ -27,7 +27,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
           deviceId: getDeviceId(),
           sid: getSessionId(),
           versionName: options?.versionName,
-          versionCode: options?.versionName,
+          versionCode: options?.versionCode,
           breadcrumb: breadcrumbObj,
           ...o,
           ...extData,
@@ -38,7 +38,12 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
     },
     [plugin]
   );
-  let eventList: any = {};
+  const defaultEvent = {
+    level: Severity.Low,
+  }
+  let eventList: any = {
+    ...defaultEvent
+  };
   // 初始化性能监控
   new WxPerformance({
     appId: options?.apikey,
@@ -46,7 +51,6 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
     ignoreUrl: new RegExp(DSNURL),
     report: debounce((data: any) => {
       const {type, item, ...eventParams} = data[0];
-      console.log(item, type, eventParams, 'item')
 
       if (
         ["WX_PERFORMANCE", "MEMORY_WARNING", "WX_USER_ACTION"].includes(
@@ -54,6 +58,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
         )
       ) {
         eventList = {
+          ...defaultEvent,
           ...eventParams
         }
         item?.map((v: any) => {
@@ -72,7 +77,9 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
   });
   const sendPerfume = debounce(async () => {
     await MitoInstance.transport.send(eventList)
-    eventList = {}
+    eventList = {
+      ...defaultEvent
+    }
   }, 1000)
   // 暂存当前页面信息
   const currentPage = {
@@ -96,8 +103,9 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       actionType: TrackActionType.DURATION,
       // 曝光时间
       elapsedTime,
+      level: Severity.Low,
       // 页面路由
-      route: currentPage.page?.route,
+      page: currentPage.page?.route,
     });
   }
   // vue全局错误上报
@@ -108,6 +116,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       message: err?.message,
       stack: err?.stack,
       info,
+      level: Severity.High,
       page: currentPage.page?.route,
     });
     console.error(err);
@@ -122,6 +131,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       page: currentPage.page?.route,
       trackId,
       data,
+      level: Severity.Normal,
     });
   };
   // 多vue版本兼容
