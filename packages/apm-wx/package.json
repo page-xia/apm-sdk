@@ -28,10 +28,10 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@ax/apm-common": "^1.0.8",
     "@mitojs/vue": "^3.0.1",
     "@mitojs/wx-mini": "^3.0.1",
-    "@mitojs/wx-mini-performance": "^3.0.1",
-    "common": "^1.0.8"
+    "@mitojs/wx-mini-performance": "^3.0.1"
   },
   "scripts": {
     "clean:dist": "rm -rf dist/",
@@ -56,5 +56,5 @@
     "typescript": "^5.0.3",
     "vue-template-compiler": "^2.7.14"
   },
-  "gitHead": "743cbe57a9485225d3ea864ffb08b312e1c2d6c0"
+  "gitHead": "2820898c1ccfb5e8b913752fcd3581a4af3d951d"
 }
