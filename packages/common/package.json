@@ -8,5 +8,8 @@
   },
   "author": "",
   "license": "ISC",
+  "files": [
+    "README.md"
+  ],
   "gitHead": "2820898c1ccfb5e8b913752fcd3581a4af3d951d"
 }
