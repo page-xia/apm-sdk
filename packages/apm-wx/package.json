@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "umd": "dist/index.umd.js",
   "commonjs": "dist/index.cjs.js",
-  "types": "dist/apm-wx/dist/index.d.ts",
+  "types": "dist/apm-wx/src/index.d.ts",
   "keywords": [
     "apm",
     "sdk"
