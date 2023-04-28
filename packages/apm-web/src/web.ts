@@ -32,6 +32,10 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
         }
         return arrayToObject(ed);
       },
+      beforePushBreadcrumb(breadcrumb: any) {
+        console.log(breadcrumb, 'breadcrumb')
+        return breadcrumb
+      },
       ...options,
     },
     [plugin]
