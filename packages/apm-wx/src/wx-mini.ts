@@ -29,6 +29,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
           versionName: options?.versionName,
           versionCode: options?.versionCode,
           breadcrumb: breadcrumbObj,
+          now: Date.now(),
           ...o,
           ...extData,
           ...data,

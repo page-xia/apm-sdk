@@ -26,6 +26,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
         const ed = {
           deviceId: getDeviceId(),
           sid: getSessionId(),
+          now: Date.now(),
           ...o,
           ...extData,
           ...data,
