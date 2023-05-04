@@ -7,7 +7,6 @@ type AnyObject = {
 type AnyArray = any[];
 
 type ObjectOrArray = AnyObject | AnyArray;
-
 const deviceKey = 'mito--uuid';
 let sid = ''; // sessionId
 /**
@@ -51,6 +50,10 @@ export function getSessionId(): string {
   }
   return sid;
 }
+// 判断空对象
+export function isEmptyObject(obj: any) {
+  return Object.keys(obj).length === 0;
+}
 /**
  * 数组转对象
  * @param obj 要转船成对象的数组
@@ -59,13 +62,16 @@ export function getSessionId(): string {
 export function arrayToObject(obj: any) {
   if (obj instanceof Array) {
     return obj.reduce((acc: any, cur: any, index: number) => {
-      acc[index] = cur;
+      acc[index] = arrayToObject(cur);
       return acc;
     }, {});
   }
   if (obj instanceof Object) {
     return Object.keys(obj).reduce((acc: any, cur: string) => {
-      acc[cur] = arrayToObject(obj[cur]);
+      const curObj = arrayToObject(obj[cur]);
+      if (!isEmptyObject(curObj)) {
+        acc[cur] = curObj
+      }
       return acc;
     }, {});
   }
@@ -135,7 +141,6 @@ export function deletePropsByPath(obj: ObjectOrArray, paths: string[]): ObjectOr
 
   return obj;
 }
-
 const perThresholds = {
   FCP: [1000, 3000],
   LCP: [2500, 4000],
