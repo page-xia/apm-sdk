@@ -33,14 +33,28 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
         }
         return arrayToObject(ed);
       },
-      beforePushBreadcrumb(breadcrumb: any) {
-        console.log(breadcrumb, 'breadcrumb')
-        return breadcrumb
+      beforePushBreadcrumb(breadcrumb: any, hint: any) {
+        // breadcrumb.stack.push(hint)
+        // breadcrumb.maxBreadcrumbs
+        // if (breadcrumb.stack?.length >= 2) {
+        //   sendBreadcrumb()
+        // }
+        // if (breadcrumb.stack?.length >= 3) {
+        //   breadcrumb.clear()
+        // }
+        return hint
       },
       ...options,
     },
     [plugin]
   );
+  const sendBreadcrumb = async () => {
+    return MitoInstance.transport.send({
+      isTrack: true,
+      actionType: TrackActionType.DURATION,
+      level: Severity.Low,
+    })
+  }
   // console.log(new UAParser().getResult(), 'UAParser')
   const defaultEvent: any = {
     actionType: "WX_PERFORMANCE",
@@ -51,8 +65,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
   // 性能上报栈
   let eventList: any = {
     ...defaultEvent,
-    ua: navigator.userAgent,
-    // systemInfo: {}
+    ua: navigator.userAgent
   }
   let timer: any;
   // 初始化性能上报
@@ -103,3 +116,4 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
     app.prototype.$trackEvent = $trackEvent;
   }
 };
+
