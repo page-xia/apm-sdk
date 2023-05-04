@@ -69,9 +69,7 @@ export function arrayToObject(obj: any) {
   if (obj instanceof Object) {
     return Object.keys(obj).reduce((acc: any, cur: string) => {
       const curObj = arrayToObject(obj[cur]);
-      if (!isEmptyObject(curObj)) {
-        acc[cur] = curObj
-      }
+      acc[cur] = curObj
       return acc;
     }, {});
   }
