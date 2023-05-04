@@ -51,9 +51,8 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
   // 性能上报栈
   let eventList: any = {
     ...defaultEvent,
-    systemInfo: {
-      ua: navigator.userAgent
-    }
+    ua: navigator.userAgent,
+    // systemInfo: {}
   }
   let timer: any;
   // 初始化性能上报
