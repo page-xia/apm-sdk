@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@ax/apm-common": "^1.0.19",
-    "@mitojs/browser": "^3.0.1",
-    "@mitojs/vue": "^3.0.1",
+    "@ax/mito-browser": "^3.0.2",
+    "@ax/mito-vue": "^3.0.2",
     "perfume.js": "^9.0.0-rc.3"
   },
   "devDependencies": {
