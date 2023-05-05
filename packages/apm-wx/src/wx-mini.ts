@@ -1,7 +1,7 @@
 import { init } from "@mitojs/wx-mini";
 import { vuePlugin } from "@mitojs/vue";
 import { WxPerformance } from "@mitojs/wx-mini-performance";
-import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRating, getSessionId } from "@ax/apm-common/src";
+import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRandomId, getRating, getSessionId } from "@ax/apm-common/src";
 import {DSNURL} from "@ax/apm-common/src"
 import type { IEvent, IOptions } from "@ax/apm-common/src";
 import { EventKeyMap, Severity, TrackActionType } from "@ax/apm-common/src";
@@ -20,7 +20,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       // maxBreadcrumbs: 2,
       throttleDelayTime: 1000,
       beforeDataReport(event) {
-        deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
+        // deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
         const { data, breadcrumb, ...o } = event;
         const breadcrumbObj = arrayToObject([...(breadcrumb || [])])
         
@@ -31,6 +31,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
           versionCode: options?.versionCode,
           breadcrumb: breadcrumbObj,
           now: Date.now(),
+          eventId: getRandomId(),
           ...o,
           ...extData,
           ...data,

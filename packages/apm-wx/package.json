@@ -1,6 +1,6 @@
 {
   "name": "@ax/apm-sdk-wx",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "ax apm sdk",
   "main": "dist/index.js",
   "umd": "dist/index.umd.js",
@@ -28,7 +28,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@ax/apm-common": "^1.0.17",
+    "@ax/apm-common": "^1.0.19",
     "@mitojs/vue": "^3.0.1",
     "@mitojs/wx-mini": "^3.0.1",
     "@mitojs/wx-mini-performance": "^3.0.1"
