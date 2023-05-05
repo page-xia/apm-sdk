@@ -9,6 +9,8 @@ type AnyArray = any[];
 type ObjectOrArray = AnyObject | AnyArray;
 const deviceKey = 'mito--uuid';
 let sid = ''; // sessionId
+
+export const isInWx = (typeof wx === 'object')
 /**
  * 节流
  * @param fn 
@@ -32,7 +34,6 @@ export const debounce = (fn: any, delay = 200) => {
  * @returns 设备id
  */
 export function getDeviceId(): string {
-  const isInWx = typeof wx !== 'undefined'
   let deviceId = isInWx ? wx.getStorageSync(deviceKey) : localStorage.getItem(deviceKey)
   if (!deviceId) {
     deviceId = getRandomId()
