@@ -1,7 +1,7 @@
 import { vuePlugin } from "@mitojs/vue";
 import { init } from "@mitojs/browser";
 import {Perfume} from 'perfume.js';
-import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath } from "@ax/apm-common/src";
+import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath, getRandomId } from "@ax/apm-common/src";
 import {DSNURL} from "@ax/apm-common/src"
 import type { IEvent, IOptions } from "@ax/apm-common/src";
 import { Severity, TrackActionType } from "@ax/apm-common/src";
@@ -21,12 +21,15 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
       debug: true,
       throttleDelayTime: 1000,
       beforeDataReport(event: any) {
-        deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
+        // deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
         const { data, ...o } = event;
+        
         const res = {
           deviceId: getDeviceId(),
           sid: getSessionId(),
           now: Date.now(),
+          ua: navigator.userAgent,
+          eventId: getRandomId(),
           ...o,
           ...extData,
           ...data,
@@ -66,7 +69,6 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
   // 性能上报栈
   let eventList: any = {
     ...defaultEvent,
-    ua: navigator.userAgent
   }
   let timer: any;
   // 初始化性能上报

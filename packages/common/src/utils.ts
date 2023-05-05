@@ -35,7 +35,7 @@ export function getDeviceId(): string {
   const isInWx = typeof wx !== 'undefined'
   let deviceId = isInWx ? wx.getStorageSync(deviceKey) : localStorage.getItem(deviceKey)
   if (!deviceId) {
-    deviceId = Math.random().toString(36).substring(2)
+    deviceId = getRandomId()
     isInWx ? wx.setStorageSync(deviceKey, deviceId) : localStorage.setItem(deviceKey, deviceId)
   }
   return deviceId;
@@ -46,7 +46,7 @@ export function getDeviceId(): string {
  */
 export function getSessionId(): string {
   if (!sid) {
-    sid = Math.random().toString(36).substring(2)
+    sid = getRandomId()
   }
   return sid;
 }
@@ -155,3 +155,6 @@ export const getRating = (
   }
   return value <= vitalsThresholds[1] ? 'needsImprovement' : 'poor';
 };
+export function getRandomId() {
+  return Math.random().toString(36).substring(2);
+}
