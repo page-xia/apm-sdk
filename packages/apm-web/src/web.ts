@@ -1,5 +1,5 @@
-import { vuePlugin } from "@mitojs/vue";
-import { init } from "@mitojs/browser";
+import { vuePlugin } from "@ax/mito-vue";
+import { init } from "@ax/mito-browser";
 import {Perfume} from 'perfume.js';
 import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath, getRandomId } from "@ax/apm-common/src";
 import {DSNURL} from "@ax/apm-common/src"

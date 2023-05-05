@@ -1,6 +1,6 @@
-import { init } from "@mitojs/wx-mini";
-import { vuePlugin } from "@mitojs/vue";
-import { WxPerformance } from "@mitojs/wx-mini-performance";
+import { init } from "@ax/mito-wx-mini";
+import { vuePlugin } from "@ax/mito-vue";
+import { WxPerformance } from "@ax/mito-wx-mini-performance";
 import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRandomId, getRating, getSessionId } from "@ax/apm-common/src";
 import {DSNURL} from "@ax/apm-common/src"
 import type { IEvent, IOptions } from "@ax/apm-common/src";
