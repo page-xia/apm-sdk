@@ -1,7 +1,7 @@
 import { init } from "@ax/mito-wx-mini";
 import { vuePlugin } from "@ax/mito-vue";
 import { WxPerformance } from "@ax/mito-wx-mini-performance";
-import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRandomId, getRating, getSessionId } from "@ax/apm-common/src";
+import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRandomId, getRating, getSessionId, isInWx } from "@ax/apm-common/src";
 import {DSNURL} from "@ax/apm-common/src"
 import type { IEvent, IOptions } from "@ax/apm-common/src";
 import { EventKeyMap, Severity, TrackActionType } from "@ax/apm-common/src";
@@ -36,6 +36,9 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
           ...extData,
           ...data,
         };
+        if (res.errorId && isInWx) {
+          res.systemInfo = wx?.getSystemInfoSync()
+        }
         res?.errorId && (res.errorId = res?.errorId?.toString())
         return res
       },
