@@ -23,7 +23,8 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
         deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
         const { data, breadcrumb, ...o } = event;
         const breadcrumbObj = arrayToObject([...(breadcrumb || [])])
-        return {
+        
+        const res = {
           deviceId: getDeviceId(),
           sid: getSessionId(),
           versionName: options?.versionName,
@@ -34,6 +35,8 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
           ...extData,
           ...data,
         };
+        res?.errorId && (res.errorId = res?.errorId?.toString())
+        return res
       },
       ...options,
     },

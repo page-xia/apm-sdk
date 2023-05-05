@@ -23,7 +23,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
       beforeDataReport(event: any) {
         deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
         const { data, ...o } = event;
-        const ed = {
+        const res = {
           deviceId: getDeviceId(),
           sid: getSessionId(),
           now: Date.now(),
@@ -31,7 +31,8 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
           ...extData,
           ...data,
         }
-        return arrayToObject(ed);
+        res?.errorId && (res.errorId = res?.errorId?.toString())
+        return arrayToObject(res);
       },
       beforePushBreadcrumb(breadcrumb: any, hint: any) {
         // breadcrumb.stack.push(hint)
