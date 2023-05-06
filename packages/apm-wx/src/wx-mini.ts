@@ -1,6 +1,6 @@
-import { init } from "@mitojs/wx-mini";
+import { init } from "@ax/mito-wx-mini";
 import { vuePlugin } from "@ax/mito-vue";
-import { WxPerformance } from "@mitojs/wx-mini-performance";
+import { WxPerformance } from "@ax/mito-wx-mini-performance";
 import { arrayToObject, debounce, deletePropsByPath, getDeviceId, getRandomId, getRating, getSessionId, isInWx } from "@ax/apm-common/src";
 import {DSNURL} from "@ax/apm-common/src"
 import type { IEvent, IOptions } from "@ax/apm-common/src";
@@ -39,7 +39,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
         if (res.errorId && isInWx) {
           res.systemInfo = wx?.getSystemInfoSync()
         }
-        if (res?.stack) {
+        if (res?.stack instanceof Array) {
           res.stackArr = arrayToObject([...(res.stack || [])])
           delete res.stack
         }

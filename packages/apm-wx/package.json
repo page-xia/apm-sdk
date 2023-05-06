@@ -29,9 +29,9 @@
   "type": "module",
   "dependencies": {
     "@ax/apm-common": "^1.0.22",
-    "@mitojs/vue": "^3.0.1",
-    "@mitojs/wx-mini": "^3.0.1",
-    "@mitojs/wx-mini-performance": "^3.0.1"
+    "@ax/mito-vue": "^3.0.2",
+    "@ax/mito-wx-mini": "^3.0.2",
+    "@ax/mito-wx-mini-performance": "^3.0.2"
   },
   "scripts": {
     "clean:dist": "rm -rf dist/",
