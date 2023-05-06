@@ -70,6 +70,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
         )
       ) {
         eventList = {
+          actionType: type,
           ...defaultEvent,
           ...eventParams
         }
