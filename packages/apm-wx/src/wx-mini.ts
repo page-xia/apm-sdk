@@ -40,7 +40,8 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
           res.systemInfo = wx?.getSystemInfoSync()
         }
         if (res?.stack) {
-          res.stack = arrayToObject([...(res.stack || [])])
+          res.stackArr = arrayToObject([...(res.stack || [])])
+          delete res.stack
         }
         res?.errorId && (res.errorId = res?.errorId?.toString())
         return res
