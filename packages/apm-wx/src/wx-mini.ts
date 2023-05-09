@@ -145,13 +145,15 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       page: currentPage.page?.route,
       trackId,
       data,
-      level: Severity.Normal,
+      level: Severity.Low,
     });
   };
   // 多vue版本兼容
   if (vueVersion === "3.") {
     app.config.globalProperties.$trackEvent = $trackEvent;
+    app.config.globalProperties.$trackLog = MitoInstance.log
   } else if (vueVersion === "2.") {
     app.prototype.$trackEvent = $trackEvent;
+    app.prototype.$trackEvent = MitoInstance.log
   }
 };

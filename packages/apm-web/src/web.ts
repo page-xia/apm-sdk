@@ -102,11 +102,11 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
     }
   }
   // 手动事件上报
-  const $trackEvent = ({ trackId, data }: IEvent) => {
+  const $trackEvent = (trackId, data) => {
     return MitoInstance.transport.send({
       isTrack: true,
       actionType: TrackActionType.EVENT,
-      level: Severity.Normal,
+      level: Severity.Low,
       trackId,
       ...data
     })
@@ -115,8 +115,10 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
   // 多vue版本兼容
   if (vueVersion === "3.") {
     app.config.globalProperties.$trackEvent = $trackEvent;
+    app.config.globalProperties.$trackLog = MitoInstance.log
   } else if (vueVersion === "2.") {
     app.prototype.$trackEvent = $trackEvent;
+    app.prototype.$trackEvent.$trackLog = MitoInstance.log
   }
 };
 
