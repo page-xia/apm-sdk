@@ -43,6 +43,9 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
           res.stackArr = arrayToObject([...(res.stack || [])])
           delete res.stack
         }
+        if (res?.td instanceof Array) {
+          res.td = arrayToObject([...(res.td || [])])
+        }
         delete res.time
         res?.errorId && (res.errorId = res?.errorId?.toString())
         return res
