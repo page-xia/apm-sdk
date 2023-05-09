@@ -108,7 +108,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
       actionType: TrackActionType.EVENT,
       level: Severity.Low,
       trackId,
-      ...data
+      td: data
     })
   };
   const vueVersion = app.version?.substring(0, 2);

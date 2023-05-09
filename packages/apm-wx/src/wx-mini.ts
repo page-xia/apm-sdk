@@ -144,7 +144,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       // 页面路由
       page: currentPage.page?.route,
       trackId,
-      data,
+      td: data,
       level: Severity.Low,
     });
   };
