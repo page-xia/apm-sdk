@@ -163,3 +163,8 @@ export function getPathName(url) {
   if (!url) return
   return url.match(/[^?]*/)?.[0];
 }
+export function getUrlPath() {
+  if (typeof window !== 'object') return
+  const {origin, pathname, hash} = window.location
+  return origin + pathname + getPathName(hash)
+}

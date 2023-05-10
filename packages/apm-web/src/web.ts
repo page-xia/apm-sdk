@@ -1,7 +1,7 @@
 import { vuePlugin } from "@ax/mito-vue";
 import { init } from "@ax/mito-browser";
 import {Perfume} from 'perfume.js';
-import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath, getRandomId } from "@ax/apm-common/src";
+import { arrayToObject, getSessionId, getDeviceId, deletePropsByPath, getRandomId, getUrlPath } from "@ax/apm-common/src";
 import {DSNURL} from "@ax/apm-common/src"
 import type { IEvent, IOptions } from "@ax/apm-common/src";
 import { Severity, TrackActionType } from "@ax/apm-common/src";
@@ -23,7 +23,6 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
       beforeDataReport(event: any) {
         // deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
         const { data, ...o } = event;
-        
         const res = {
           deviceId: getDeviceId(),
           sid: getSessionId(),
@@ -33,7 +32,10 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
           ...o,
           ...extData,
           ...data,
-          url: location.pathname+location.hash
+          path: getUrlPath()
+        }
+        if (!res.url) {
+          res.url = window.location.href
         }
         res?.errorId && (res.errorId = res?.errorId?.toString())
         return arrayToObject(res);

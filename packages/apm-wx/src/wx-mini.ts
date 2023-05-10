@@ -49,7 +49,8 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
           ...extData,
           ...data
         };
-        res.url = getPathName(res.url || data?.url || currentPage?.page?.route)
+        res.url = getPathName(res.url || data?.url || data?.page || currentPage?.page?.route)
+        res.path = res.url
         if (res.errorId && isInWx) {
           res.systemInfo = wx?.getSystemInfoSync()
         }
