@@ -105,7 +105,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
     }
   }
   // 手动事件上报
-  const $trackEvent = (trackId, data) => {
+  const $trackEvent = (trackId: string, data: any) => {
     return MitoInstance.transport.send({
       isTrack: true,
       actionType: TrackActionType.EVENT,

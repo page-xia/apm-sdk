@@ -160,7 +160,7 @@ export function getRandomId() {
   return Math.random().toString(36).substring(2);
 }
 export function getPathName(url) {
-  if (!url) return
+  if (!url) return ''
   return url.match(/[^?]*/)?.[0] || '';
 }
 export function getUrlPath() {
