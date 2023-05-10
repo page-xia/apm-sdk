@@ -161,7 +161,7 @@ export function getRandomId() {
 }
 export function getPathName(url) {
   if (!url) return
-  return url.match(/[^?]*/)?.[0];
+  return url.match(/[^?]*/)?.[0] || '';
 }
 export function getUrlPath() {
   if (typeof window !== 'object') return
