@@ -113,21 +113,27 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
   function pageOnShow(page: any) {
     currentPage.startTime = Date.now();
     currentPage.page = page;
-  }
-  // 页面隐藏钩子
-  function pageOnHide() {
-    // 离开页面埋点
-    const endTime = Date.now();
-    const elapsedTime = endTime - currentPage.startTime;
-    // 拿到信息并上报
     MitoInstance.trackSend({
-      actionType: TrackActionType.DURATION,
-      // 曝光时间
-      elapsedTime,
+      type: 'Route',
       level: Severity.Low,
       // 页面路由
       url: currentPage.page?.route,
     });
+  }
+  // 页面隐藏钩子
+  function pageOnHide() {
+    // 离开页面埋点
+    // const endTime = Date.now();
+    // const elapsedTime = endTime - currentPage.startTime;
+    // // 拿到信息并上报
+    // MitoInstance.trackSend({
+    //   actionType: TrackActionType.DURATION,
+    //   // 曝光时间
+    //   elapsedTime,
+    //   level: Severity.Low,
+    //   // 页面路由
+    //   url: currentPage.page?.route,
+    // });
   }
   // vue全局错误上报
   app.config.errorHandler = (err: any, vm: any | null, info: string) => {

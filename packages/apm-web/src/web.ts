@@ -43,9 +43,9 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
       beforePushBreadcrumb(breadcrumb: any, hint: any) {
         // breadcrumb.stack.push(hint)
         // breadcrumb.maxBreadcrumbs
-        // if (breadcrumb.stack?.length >= 2) {
-        //   sendBreadcrumb()
-        // }
+        if (hint.type === 'Route') {
+          sendBreadcrumb(hint.type)
+        }
         // if (breadcrumb.stack?.length >= 3) {
         //   breadcrumb.clear()
         // }
@@ -55,10 +55,10 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
     },
     [plugin]
   );
-  const sendBreadcrumb = async () => {
+  const sendBreadcrumb = async (type: string) => {
     return MitoInstance.transport.send({
       isTrack: true,
-      actionType: TrackActionType.DURATION,
+      type,
       level: Severity.Low,
     })
   }
