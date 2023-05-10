@@ -32,12 +32,10 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
           eventId: getRandomId(),
           ...o,
           ...extData,
-          ...data
+          ...data,
+          url: location.pathname+location.hash
         }
         res?.errorId && (res.errorId = res?.errorId?.toString())
-        if (!res.url) {
-          res.url = data?.url || event?.url || window.location.href
-        }
         return arrayToObject(res);
       },
       beforePushBreadcrumb(breadcrumb: any, hint: any) {
