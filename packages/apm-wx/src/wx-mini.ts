@@ -7,6 +7,19 @@ import type { IEvent, IOptions } from "@ax/apm-common/src";
 import { EventKeyMap, Severity, TrackActionType } from "@ax/apm-common/src";
 const plugin: any = vuePlugin;
 export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
+  const defaultEvent = {
+    level: Severity.Low,
+  }
+  let eventList: any = {
+    ...defaultEvent
+  };
+  // 暂存当前页面信息
+  const currentPage = {
+    startTime: 0,
+    page: {
+      route: undefined,
+    },
+  };
   // 初始化mito
   const MitoInstance = init(
     {
@@ -21,7 +34,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       throttleDelayTime: 1000,
       beforeDataReport(event) {
         // deletePropsByPath(event, ['authInfo.sdkName', 'authInfo.sdkVersion'])
-        const { data, breadcrumb, ...o } = event;
+        const { data, breadcrumb, ...o }: any = event;
         const breadcrumbObj = arrayToObject([...(breadcrumb || [])])
         
         const res = {
@@ -36,6 +49,9 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
           ...extData,
           ...data,
         };
+        if (!res.url) {
+          res.url = data?.url || currentPage?.page?.route
+        }
         if (res.errorId && isInWx) {
           res.systemInfo = wx?.getSystemInfoSync()
         }
@@ -54,12 +70,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
     },
     [plugin]
   );
-  const defaultEvent = {
-    level: Severity.Low,
-  }
-  let eventList: any = {
-    ...defaultEvent
-  };
+ 
   // 初始化性能监控
   new WxPerformance({
     appId: options?.apikey,
@@ -98,13 +109,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       ...defaultEvent
     }
   }, 1000)
-  // 暂存当前页面信息
-  const currentPage = {
-    startTime: 0,
-    page: {
-      route: undefined,
-    },
-  };
+  
   // 页面显示钩子
   function pageOnShow(page: any) {
     currentPage.startTime = Date.now();
@@ -122,7 +127,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       elapsedTime,
       level: Severity.Low,
       // 页面路由
-      page: currentPage.page?.route,
+      url: currentPage.page?.route,
     });
   }
   // vue全局错误上报
@@ -134,7 +139,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       stack: err?.stack,
       info,
       level: Severity.High,
-      page: currentPage.page?.route,
+      url: currentPage.page?.route,
     });
     console.error(err);
   };
@@ -145,7 +150,7 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
       // 可自定义
       actionType: TrackActionType.EVENT,
       // 页面路由
-      page: currentPage.page?.route,
+      url: currentPage.page?.route,
       trackId,
       td: data,
       level: Severity.Low,
