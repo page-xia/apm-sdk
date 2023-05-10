@@ -1,6 +1,6 @@
 {
   "name": "@ax/apm-sdk-wx",
-  "version": "1.0.36",
+  "version": "1.0.37",
   "description": "ax apm sdk",
   "main": "dist/index.js",
   "umd": "dist/index.umd.js",
