@@ -38,7 +38,7 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
           res.url = window.location.href
         }
         res?.errorId && (res.errorId = res?.errorId?.toString())
-        return arrayToObject(res);
+        return res;
       },
       beforePushBreadcrumb(breadcrumb: any, hint: any) {
         // breadcrumb.stack.push(hint)
