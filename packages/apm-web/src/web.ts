@@ -43,6 +43,8 @@ export const webSdk = (app: any, options: IOptions, extData?: any): void => {
       beforePushBreadcrumb(breadcrumb: any, hint: any) {
         // breadcrumb.stack.push(hint)
         // breadcrumb.maxBreadcrumbs
+        delete hint?.data?.request?.data
+        delete hint?.data?.response?.data
         if (hint.type === 'Route') {
           sendBreadcrumb(hint.type)
         }

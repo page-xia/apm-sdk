@@ -65,6 +65,11 @@ export const wxMiniSdk = (app: any, options: IOptions, extData?: any): void=> {
         res?.errorId && (res.errorId = res?.errorId?.toString())
         return res
       },
+      beforePushBreadcrumb(breadcrumb: any, hint: any) {
+        delete hint?.data?.request?.data
+        delete hint?.data?.response?.data
+        return hint
+      },
       ...options,
     },
     [plugin]
